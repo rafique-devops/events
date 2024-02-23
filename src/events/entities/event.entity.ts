@@ -48,6 +48,16 @@ export class Event {
   @Column()
   eventImageCarousal: string;
 
+  @Column({
+    type: 'enum',
+    enum: ['Draft', 'Live', 'InActive'],
+    nullable: false,
+  })
+  status: string;
+
+  @Column()
+  isDeleted: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 

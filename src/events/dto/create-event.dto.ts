@@ -10,6 +10,8 @@ export class CreateEventDto {
   eventCategory: string;
   eventHeroImage: string;
   eventImageCarousal: string;
+  status: string;
+  isDeleted: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
