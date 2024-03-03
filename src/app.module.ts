@@ -2,34 +2,51 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+// import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EventsModule } from './events/events.module';
 import { TicketsModule } from './tickets/tickets.module';
 import { join } from 'path';
 import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver } from '@nestjs/apollo';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        type: 'mysql',
-        host: configService.get('HOST'),
-        port: +configService.get('PORT'),
-        username: configService.get('USER'),
-        password: configService.get('PASSWORD'),
-        database: configService.get('DATABASE'),
-        entities: [join(process.cwd(), 'dist/**/*.entity.js')],
-        synchronize: true,
-      }),
-      inject: [ConfigService],
+    GraphQLModule.forRoot({
+      driver: ApolloDriver,
+      playground: true,
+      autoSchemaFile: join(process.cwd(), 'src/schema.graphql'),
+      definitions: {
+        path: join(process.cwd(), 'src/graphql.ts'),
+      },
     }),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      port: 5432,
+      username: 'rafiquekhan',
+      password: '',
+      database: 'events',
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      synchronize: false,
+    }),
+    // ConfigModule.forRoot(),
+    // TypeOrmModule.forRootAsync({
+    //   imports: [ConfigModule],
+    //   useFactory: (configService: ConfigService) => ({
+    //     // type: 'mysql',
+    //     type: 'postgres',
+    //     host: configService.get('HOST'),
+    //     port: +configService.get('PORT'),
+    //     username: configService.get('USER'),
+    //     password: configService.get('PASSWORD'),
+    //     database: configService.get('DATABASE'),
+    //     entities: [__dirname + '/**/*.entity{.ts,.js}'],
+    //     synchronize: true,
+    //   }),
+    //   inject: [ConfigService],
+    // }),
     EventsModule,
     TicketsModule,
-    GraphQLModule.forRoot({
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-    }),
   ],
   controllers: [AppController],
   providers: [AppService],

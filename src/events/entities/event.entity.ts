@@ -35,7 +35,7 @@ export class Event {
   eventLocation: string;
 
   @Column()
-  sponsorshipTier: string | string[];
+  sponsorshipTier: string;
 
   @Column()
   eventDescription: string;
@@ -55,11 +55,11 @@ export class Event {
   @Column()
   eventCategory: string;
 
-  @Column({ default: false })
+  @Column()
   eventSampling: boolean;
 
   @Column()
-  eventSamplingProduct: string | string[];
+  eventSamplingProduct: string;
 
   @Column()
   eventHeroImage: string;

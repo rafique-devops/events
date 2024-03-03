@@ -4,7 +4,7 @@ export class CreateEventDto {
   eventType: string;
   storeName: string;
   eventLocation: string;
-  sponsorshipTier: string | string[];
+  sponsorshipTier: string;
   eventDescription: string;
   eventStartDate: string;
   eventStartTime: string;
@@ -12,7 +12,7 @@ export class CreateEventDto {
   eventEndTime: string;
   eventCategory: string;
   eventSampling: string;
-  eventSamplingProduct: string | string[];
+  eventSamplingProduct: string;
   eventHeroImage: string;
   eventImageCarousal: string;
   eventTnC: string;
