@@ -6,6 +6,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EventsModule } from './events/events.module';
 import { TicketsModule } from './tickets/tickets.module';
 import { join } from 'path';
+import { GraphQLModule } from '@nestjs/graphql';
 
 @Module({
   imports: [
@@ -26,6 +27,9 @@ import { join } from 'path';
     }),
     EventsModule,
     TicketsModule,
+    GraphQLModule.forRoot({
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

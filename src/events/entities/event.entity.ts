@@ -11,42 +11,70 @@ export class Event {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column()
+  eventName: string;
+
   @Column({
     type: 'enum',
-    enum: ['In-Person', 'Virtual', 'Hybrid'],
+    enum: ['Member', 'Non-Member'],
+    nullable: false,
+  })
+  attendeeType: string;
+
+  @Column({
+    type: 'enum',
+    enum: ['One-To-One', 'One-To-Many'],
     nullable: false,
   })
   eventType: string;
 
   @Column()
-  eventName: string;
+  storeName: string;
 
   @Column()
-  startDate: string;
+  eventLocation: string;
 
   @Column()
-  startTime: string;
+  sponsorshipTier: string | string[];
 
   @Column()
-  endDate: string;
+  eventDescription: string;
 
   @Column()
-  endTime: string;
+  eventStartDate: string;
 
   @Column()
-  storeLocation: string;
+  eventStartTime: string;
 
   @Column()
-  summary: string;
+  eventEndDate: string;
+
+  @Column()
+  eventEndTime: string;
 
   @Column()
   eventCategory: string;
+
+  @Column({ default: false })
+  eventSampling: boolean;
+
+  @Column()
+  eventSamplingProduct: string | string[];
 
   @Column()
   eventHeroImage: string;
 
   @Column()
   eventImageCarousal: string;
+
+  @Column()
+  eventTnC: string;
+
+  @Column()
+  publishToBrands: boolean;
+
+  @Column()
+  publishToCustomers: boolean;
 
   @Column({
     type: 'enum',
