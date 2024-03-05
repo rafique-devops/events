@@ -8,11 +8,11 @@ import { v4 as uuidv4 } from 'uuid';
 // import { Logger } from '@nestjs/common';
 import { UpdateEventArgs } from './args/update.events.args';
 
-@Resolver((of) => EventModel)
+@Resolver(() => EventModel)
 export class EventsResolver {
   constructor(private readonly eventService: EventsService) {}
 
-  @Mutation((returns) => EventModel, { name: 'createEvent' })
+  @Mutation(() => EventModel, { name: 'createEvent' })
   async create(
     @Args('addEventArgs') addEventArgs: AddEventArgs,
   ): Promise<EventModel> {
@@ -36,7 +36,7 @@ export class EventsResolver {
     }
   }
 
-  @Mutation((returns) => String, { name: 'deleteEventById' })
+  @Mutation(() => String, { name: 'deleteEventById' })
   delete(@Args({ name: 'eventId', type: () => String }) id: string) {
     try {
       return this.eventService.delete(id);
@@ -49,7 +49,7 @@ export class EventsResolver {
     }
   }
 
-  @Query((returns) => [EventModel], { name: 'getAllEvents' })
+  @Query(() => [EventModel], { name: 'getAllEvents' })
   async findAll(): Promise<EventModel[]> {
     try {
       const event = await this.eventService.findAll();
@@ -66,7 +66,7 @@ export class EventsResolver {
     }
   }
 
-  @Query((returns) => EventModel, { name: 'getEventById', nullable: true })
+  @Query(() => EventModel, { name: 'getEventById', nullable: true })
   async eventById(
     @Args({ name: 'eventId', type: () => String }) id: string,
   ): Promise<EventModel> {
@@ -86,7 +86,7 @@ export class EventsResolver {
     }
   }
 
-  @Mutation((returns) => EventModel, { name: 'updateEventById' })
+  @Mutation(() => EventModel, { name: 'updateEventById' })
   async update(
     @Args('id', { type: () => String }) id: string,
     @Args('updateEventArgs') updateEventArgs: UpdateEventArgs,
