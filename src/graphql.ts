@@ -9,7 +9,6 @@
 /* eslint-disable */
 
 export interface AddEventArgs {
-    id: number;
     eventName: string;
     attendeeType: string;
     eventType: string;
@@ -31,12 +30,34 @@ export interface AddEventArgs {
     publishToCustomers: boolean;
     status: string;
     isDeleted: boolean;
-    createdAt: DateTime;
-    updatedAt: DateTime;
+}
+
+export interface UpdateEventArgs {
+    eventName: string;
+    attendeeType: string;
+    eventType: string;
+    storeName: string;
+    eventLocation: string;
+    sponsorshipTier: string;
+    eventDescription: string;
+    eventStartDate: string;
+    eventStartTime: string;
+    eventEndDate: string;
+    eventEndTime: string;
+    eventCategory: string;
+    eventSampling: boolean;
+    eventSamplingProduct: string;
+    eventHeroImage: string;
+    eventImageCarousal: string;
+    eventTnC: string;
+    publishToBrands: boolean;
+    publishToCustomers: boolean;
+    status: string;
+    isDeleted: boolean;
 }
 
 export interface Event {
-    id: number;
+    id: string;
     eventName: string;
     attendeeType: string;
     eventType: string;
@@ -64,10 +85,13 @@ export interface Event {
 
 export interface IQuery {
     getAllEvents(): Event[] | Promise<Event[]>;
+    getEventById(eventId: string): Nullable<Event> | Promise<Nullable<Event>>;
 }
 
 export interface IMutation {
-    createEvent(addEventArgs: AddEventArgs): string | Promise<string>;
+    createEvent(addEventArgs: AddEventArgs): Event | Promise<Event>;
+    deleteEventById(eventId: string): string | Promise<string>;
+    updateEventById(id: string, updateEventArgs: UpdateEventArgs): Event | Promise<Event>;
 }
 
 export type DateTime = any;

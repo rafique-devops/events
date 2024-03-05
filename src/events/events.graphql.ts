@@ -1,9 +1,10 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
+// import { Ticket } from 'src/tickets/tickets.graphql';
 
 @ObjectType()
 export class Event {
-  @Field(() => Int)
-  id: number;
+  @Field()
+  id: string;
 
   @Field()
   eventName: string;
@@ -73,4 +74,7 @@ export class Event {
 
   @Field({ nullable: true })
   updatedAt: Date;
+
+  // @Field(() => [Ticket], { nullable: true })
+  // tickets: Ticket[];
 }

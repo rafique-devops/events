@@ -2,7 +2,7 @@ import { Field, InputType } from '@nestjs/graphql';
 // import { Ticket } from 'src/tickets/tickets.graphql';
 
 @InputType()
-export class AddEventArgs {
+export class UpdateEventArgs {
   @Field()
   eventName: string;
 

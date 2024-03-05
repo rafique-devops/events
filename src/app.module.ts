@@ -27,7 +27,7 @@ import { ApolloDriver } from '@nestjs/apollo';
       password: '',
       database: 'events',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: false,
+      synchronize: true,
     }),
     // ConfigModule.forRoot(),
     // TypeOrmModule.forRootAsync({

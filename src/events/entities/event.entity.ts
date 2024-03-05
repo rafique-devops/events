@@ -8,8 +8,8 @@ import {
 
 @Entity({ name: 'events_data' })
 export class Event {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   eventName: string;

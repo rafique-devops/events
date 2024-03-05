@@ -3,7 +3,7 @@
 # ------------------------------------------------------
 
 type Event {
-  id: Int!
+  id: String!
   eventName: String!
   attendeeType: String!
   eventType: String!
@@ -36,14 +36,16 @@ scalar DateTime
 
 type Query {
   getAllEvents: [Event!]!
+  getEventById(eventId: String!): Event
 }
 
 type Mutation {
-  createEvent(addEventArgs: AddEventArgs!): String!
+  createEvent(addEventArgs: AddEventArgs!): Event!
+  deleteEventById(eventId: String!): String!
+  updateEventById(id: String!, updateEventArgs: UpdateEventArgs!): Event!
 }
 
 input AddEventArgs {
-  id: Int!
   eventName: String!
   attendeeType: String!
   eventType: String!
@@ -65,6 +67,28 @@ input AddEventArgs {
   publishToCustomers: Boolean!
   status: String!
   isDeleted: Boolean!
-  createdAt: DateTime!
-  updatedAt: DateTime!
+}
+
+input UpdateEventArgs {
+  eventName: String!
+  attendeeType: String!
+  eventType: String!
+  storeName: String!
+  eventLocation: String!
+  sponsorshipTier: String!
+  eventDescription: String!
+  eventStartDate: String!
+  eventStartTime: String!
+  eventEndDate: String!
+  eventEndTime: String!
+  eventCategory: String!
+  eventSampling: Boolean!
+  eventSamplingProduct: String!
+  eventHeroImage: String!
+  eventImageCarousal: String!
+  eventTnC: String!
+  publishToBrands: Boolean!
+  publishToCustomers: Boolean!
+  status: String!
+  isDeleted: Boolean!
 }
