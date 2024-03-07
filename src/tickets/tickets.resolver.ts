@@ -6,6 +6,7 @@ import { ApolloError } from 'apollo-server-express';
 import { AddTicketInput } from './dto/add.ticket.dto';
 import { v4 as uuidv4 } from 'uuid';
 import { Logger } from '@nestjs/common';
+// import { error } from 'console';
 
 @Resolver(() => Ticket)
 export class TicketsResolver {
@@ -15,9 +16,9 @@ export class TicketsResolver {
   ) {}
 
   @Query(() => [Ticket], { name: 'getAllTickets' })
-  async findAll(): Promise<Ticket[]> {
+  async getAllTickets(): Promise<Ticket[]> {
     try {
-      const ticket = await this.ticketService.findAll();
+      const ticket = await this.ticketService.getAllTickets();
       if (!ticket) {
         throw new Error('No Ticket Found');
       }

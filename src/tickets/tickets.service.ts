@@ -4,10 +4,12 @@ import { Ticket } from './entities/ticket.entity';
 import { Equal, Repository } from 'typeorm';
 import { EventsService } from 'src/events/events.service';
 import { ApolloError } from 'apollo-server-express';
+// import { error } from 'console';
 // import { Ticket } from './entities/ticket.entity';
 
 @Injectable()
 export class TicketsService {
+  [x: string]: any;
   constructor(
     @InjectRepository(Ticket)
     private ticketRepository: Repository<Ticket>,
@@ -30,10 +32,10 @@ export class TicketsService {
     }
   }
 
-  async findAll(): Promise<Ticket[]> {
+  async getAllTickets(): Promise<Ticket[]> {
     try {
       const ticket = await this.ticketRepository.find({
-        where: { isDeleted: true },
+        where: { isDeleted: false },
       });
       Logger.log(ticket);
       if (!ticket) {
@@ -49,10 +51,10 @@ export class TicketsService {
     }
   }
 
-  async getTicketsByEventId(event: string): Promise<Ticket[]> {
+  async getTicketsByEventId(event_id: string): Promise<Ticket[]> {
     try {
       const ticketByEvent = await this.ticketRepository.find({
-        where: { eventId: Equal(event) },
+        where: { eventId: Equal(event_id) },
       });
       return ticketByEvent;
     } catch (error) {
