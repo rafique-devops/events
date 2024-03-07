@@ -1,30 +1,37 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-// import { Event } from './entities/event.entity';
-import { Event as EventModel } from './events.graphql';
+import { Args, Mutation, Resolver, Query } from '@nestjs/graphql';
+import { Event } from './entities/event.entity';
 import { EventsService } from './events.service';
-import { AddEventArgs } from './args/add.events.args';
 import { ApolloError } from 'apollo-server-express';
 import { v4 as uuidv4 } from 'uuid';
+// import { Logger, Query } from '@nestjs/common';
+import { AddEventInput } from './dto/add.events.dto';
+import { UpdateEventInput } from './dto/update.events.dto';
 // import { Logger } from '@nestjs/common';
-import { UpdateEventArgs } from './args/update.events.args';
+// import { UpdateEventArgs } from './args/update.events.args';
 
-@Resolver(() => EventModel)
+@Resolver(() => Event)
 export class EventsResolver {
+  eventRepository: any;
   constructor(private readonly eventService: EventsService) {}
 
-  @Mutation(() => EventModel, { name: 'createEvent' })
+  @Mutation(() => Event, { name: 'createEvent' })
   async create(
-    @Args('addEventArgs') addEventArgs: AddEventArgs,
-  ): Promise<EventModel> {
-    const event = await this.eventService.create({
-      id: uuidv4(),
-      ...addEventArgs,
-      createdAt: undefined,
-      updatedAt: undefined,
-    });
+    @Args('addEventInput') addEventInput: AddEventInput,
+  ): Promise<Event> {
     try {
+      const eventInput = await this.eventService.create({
+        ...addEventInput,
+        id: uuidv4(),
+        createdAt: undefined,
+        updatedAt: undefined,
+        tickets: [],
+      });
+      if (!eventInput) {
+        throw new Error('Error while fetching the input for event');
+      }
+      const event = await this.eventService.create(eventInput);
       if (!event) {
-        throw new Error('Error while creating the event');
+        throw new Error('Unable to create the event');
       }
       return event;
     } catch (error) {
@@ -49,8 +56,8 @@ export class EventsResolver {
     }
   }
 
-  @Query(() => [EventModel], { name: 'getAllEvents' })
-  async findAll(): Promise<EventModel[]> {
+  @Query(() => [Event], { name: 'getAllEvents' })
+  async findAll(): Promise<Event[]> {
     try {
       const event = await this.eventService.findAll();
       if (!event) {
@@ -66,10 +73,10 @@ export class EventsResolver {
     }
   }
 
-  @Query(() => EventModel, { name: 'getEventById', nullable: true })
+  @Query(() => Event, { name: 'getEventById', nullable: true })
   async eventById(
     @Args({ name: 'eventId', type: () => String }) id: string,
-  ): Promise<EventModel> {
+  ): Promise<Event> {
     try {
       const event = await this.eventService.eventById(id);
       if (!event) {
@@ -86,15 +93,15 @@ export class EventsResolver {
     }
   }
 
-  @Mutation(() => EventModel, { name: 'updateEventById' })
+  @Mutation(() => Event, { name: 'updateEventById' })
   async update(
     @Args('id', { type: () => String }) id: string,
-    @Args('updateEventArgs') updateEventArgs: UpdateEventArgs,
-  ): Promise<EventModel> {
+    @Args('updateEventInput') updateEventInput: UpdateEventInput,
+  ): Promise<Event> {
     try {
       const updated_events = await this.eventService.update(
         id,
-        updateEventArgs,
+        updateEventInput,
       );
       // Logger.log(updated_events);
       if (!id || !updated_events) {

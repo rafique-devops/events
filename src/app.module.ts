@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 // import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -8,6 +7,7 @@ import { TicketsModule } from './tickets/tickets.module';
 import { join } from 'path';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver } from '@nestjs/apollo';
+// import { Ticket } from 'src/tickets/entities/ticket.entity';
 
 @Module({
   imports: [
@@ -16,7 +16,7 @@ import { ApolloDriver } from '@nestjs/apollo';
       playground: true,
       autoSchemaFile: join(process.cwd(), 'src/schema.graphql'),
       definitions: {
-        path: join(process.cwd(), 'src/graphql.ts'),
+        path: join(process.cwd(), 'src/graphql.schema'),
       },
     }),
     TypeOrmModule.forRoot({
@@ -48,7 +48,7 @@ import { ApolloDriver } from '@nestjs/apollo';
     EventsModule,
     TicketsModule,
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [AppService],
 })
 export class AppModule {}

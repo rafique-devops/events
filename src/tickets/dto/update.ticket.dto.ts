@@ -1,17 +1,16 @@
 import { Field, InputType, Int } from '@nestjs/graphql';
-import { TicketPrice } from '../ticket.price.graphql';
 import {
+  TicketStatus,
+  TicketType,
+  TicketConsumptionType,
+  TicketDiscountType,
   TicketSlots,
   TicketVisibilityInApp,
   HiddenWhen,
-  TicketStatus,
-} from '../tickets.graphql';
+} from '../tickets.enum';
 
 @InputType()
-export class AddTicketArgs {
-  @Field(() => Int)
-  id: number;
-
+export class UpdateTicketInput {
   @Field()
   ticketName: string;
 
@@ -24,8 +23,20 @@ export class AddTicketArgs {
   @Field(() => Int)
   ticketQuantity: number;
 
-  @Field(() => TicketPrice)
-  ticketPricing: TicketPrice;
+  @Field(() => TicketType)
+  ticketType: TicketType;
+
+  @Field(() => Int)
+  ticketValue: number;
+
+  @Field(() => TicketConsumptionType)
+  ticketConsumptionType: TicketConsumptionType;
+
+  @Field(() => TicketDiscountType)
+  ticketDiscountType: TicketDiscountType;
+
+  @Field(() => Int)
+  ticketDiscountValue: number;
 
   @Field()
   minimumBuyingLimit: number;
@@ -46,10 +57,13 @@ export class AddTicketArgs {
   salesEndTime: string;
 
   @Field(() => TicketSlots)
-  ticketSlots: TicketSlots;
+  ticketSlotType: TicketSlots;
 
   @Field()
-  ticketSamplingProduct: string;
+  ticketSlotValue: string;
+
+  @Field()
+  ticketSampleProduct: string;
 
   @Field()
   ticketDescription: string;
@@ -62,13 +76,4 @@ export class AddTicketArgs {
 
   @Field()
   isDeleted: boolean;
-
-  @Field({ nullable: true })
-  createdAt: Date;
-
-  @Field({ nullable: true })
-  updatedAt: Date;
-
-  @Field(() => Event)
-  event: Event;
 }

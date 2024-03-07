@@ -2,6 +2,26 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Ticket {
+  eventId: Event
+  id: String!
+  ticketName: String!
+  ticketColor: String!
+  ticketQuantity: Float!
+  ticketValue: Float!
+  ticketDiscountValue: Float!
+  minimumBuyingLimit: Float!
+  maximumBuyingLimit: Float!
+  saleStartDate: String!
+  saleStartTime: String!
+  saleEndDate: String!
+  saleEndTime: String!
+  ticketSlotValue: Float!
+  ticketSampleProduct: String!
+  ticketDescription: String!
+  isDeleted: Boolean!
+}
+
 type Event {
   id: String!
   eventName: String!
@@ -17,7 +37,7 @@ type Event {
   eventEndTime: String!
   eventCategory: String!
   eventSampling: Boolean!
-  eventSamplingProduct: String
+  eventSamplingProduct: String!
   eventHeroImage: String!
   eventImageCarousal: String!
   eventTnC: String!
@@ -25,8 +45,9 @@ type Event {
   publishToCustomers: Boolean!
   status: String!
   isDeleted: Boolean!
-  createdAt: DateTime
-  updatedAt: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  tickets: [Ticket!]
 }
 
 """
@@ -37,21 +58,24 @@ scalar DateTime
 type Query {
   getAllEvents: [Event!]!
   getEventById(eventId: String!): Event
+  getAllTickets: [Ticket!]!
+  getTicketByEventId(eventId: String!): [Ticket!]
 }
 
 type Mutation {
-  createEvent(addEventArgs: AddEventArgs!): Event!
+  createEvent(addEventInput: AddEventInput!): Event!
   deleteEventById(eventId: String!): String!
-  updateEventById(id: String!, updateEventArgs: UpdateEventArgs!): Event!
+  updateEventById(id: String!, updateEventInput: UpdateEventInput!): Event!
+  createTicket(addTicketInput: AddTicketInput!): Ticket!
 }
 
-input AddEventArgs {
+input AddEventInput {
   eventName: String!
-  attendeeType: String!
-  eventType: String!
+  attendeeType: AttendeeType!
+  eventType: EventType!
   storeName: String!
   eventLocation: String!
-  sponsorshipTier: String!
+  sponsorshipTier: SponsorshipTier!
   eventDescription: String!
   eventStartDate: String!
   eventStartTime: String!
@@ -65,17 +89,40 @@ input AddEventArgs {
   eventTnC: String!
   publishToBrands: Boolean!
   publishToCustomers: Boolean!
-  status: String!
+  status: Status!
   isDeleted: Boolean!
 }
 
-input UpdateEventArgs {
+enum AttendeeType {
+  MEMBER
+  NON_MEMBER
+}
+
+enum EventType {
+  ONE_TO_ONE
+  ONE_TO_MANY
+}
+
+enum SponsorshipTier {
+  BRONZE
+  SILVER
+  GOLD
+  PLATINUM
+}
+
+enum Status {
+  DRAFT
+  LIVE
+  INACTIVE
+}
+
+input UpdateEventInput {
   eventName: String!
-  attendeeType: String!
-  eventType: String!
+  attendeeType: AttendeeType!
+  eventType: EventType!
   storeName: String!
   eventLocation: String!
-  sponsorshipTier: String!
+  sponsorshipTier: SponsorshipTier!
   eventDescription: String!
   eventStartDate: String!
   eventStartTime: String!
@@ -89,6 +136,72 @@ input UpdateEventArgs {
   eventTnC: String!
   publishToBrands: Boolean!
   publishToCustomers: Boolean!
-  status: String!
+  status: Status!
   isDeleted: Boolean!
+}
+
+input AddTicketInput {
+  eventId: ID!
+  ticketName: String!
+  ticketColor: String!
+  ticketStatus: TicketStatus!
+  ticketQuantity: Int!
+  ticketType: TicketType!
+  ticketValue: Int!
+  ticketConsumptionType: TicketConsumptionType!
+  ticketDiscountType: TicketDiscountType!
+  ticketDiscountValue: Int!
+  minimumBuyingLimit: Int!
+  maximumBuyingLimit: Int!
+  salesStartDate: String!
+  salesStartTime: String!
+  salesEndDate: String!
+  salesEndTime: String!
+  ticketSlotType: TicketSlots!
+  ticketSlotValue: Int!
+  ticketSampleProduct: String!
+  ticketDescription: String!
+  ticketVisibilityInApp: TicketVisibilityInApp!
+  ticketHiddenWhen: HiddenWhen!
+  isDeleted: Boolean!
+}
+
+enum TicketStatus {
+  Open
+  Closed
+  Mark_As_Sold_Out
+}
+
+enum TicketType {
+  Free
+  Paid
+}
+
+enum TicketConsumptionType {
+  Loyalty_Points_Only
+  No_Loyalty_Points
+  Cash_Loyalty_Points
+}
+
+enum TicketDiscountType {
+  Percentage
+  Flat_Points
+}
+
+enum TicketSlots {
+  Duration
+  Count
+}
+
+enum TicketVisibilityInApp {
+  Always_Available
+  Always_Hidden
+  Hidden_When
+}
+
+enum HiddenWhen {
+  Sold_Out
+  Status_Closed
+  Sales_Not_Started
+  Sales_Ended
 }

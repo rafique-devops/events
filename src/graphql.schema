@@ -32,46 +32,46 @@ export enum Status {
 }
 
 export enum TicketStatus {
-    OPEN = "OPEN",
-    CLOSED = "CLOSED",
-    MARK_AS_SOLD_OUT = "MARK_AS_SOLD_OUT"
+    Open = "Open",
+    Closed = "Closed",
+    Mark_As_Sold_Out = "Mark_As_Sold_Out"
 }
 
 export enum TicketType {
-    FREE = "FREE",
-    PAID = "PAID"
+    Free = "Free",
+    Paid = "Paid"
 }
 
 export enum TicketConsumptionType {
-    LOYALTY_POINTS_ONLY = "LOYALTY_POINTS_ONLY",
-    NO_LOYALTY_POINTS = "NO_LOYALTY_POINTS",
-    CASH_LOYALTY_POINTS = "CASH_LOYALTY_POINTS"
+    Loyalty_Points_Only = "Loyalty_Points_Only",
+    No_Loyalty_Points = "No_Loyalty_Points",
+    Cash_Loyalty_Points = "Cash_Loyalty_Points"
 }
 
 export enum TicketDiscountType {
-    PERCENTAGE = "PERCENTAGE",
-    FLAT_POINTS = "FLAT_POINTS"
+    Percentage = "Percentage",
+    Flat_Points = "Flat_Points"
 }
 
 export enum TicketSlots {
-    DURATION = "DURATION",
-    COUNT = "COUNT"
+    Duration = "Duration",
+    Count = "Count"
 }
 
 export enum TicketVisibilityInApp {
-    ALWAYS_VISIBLE = "ALWAYS_VISIBLE",
-    ALWAYS_HIDDEN = "ALWAYS_HIDDEN",
-    HIDDEN_WHEN = "HIDDEN_WHEN"
+    Always_Available = "Always_Available",
+    Always_Hidden = "Always_Hidden",
+    Hidden_When = "Hidden_When"
 }
 
 export enum HiddenWhen {
-    SOLD_OUT = "SOLD_OUT",
-    STATUS_CLOSED = "STATUS_CLOSED",
-    SALES_NOT_STARTED = "SALES_NOT_STARTED",
-    SALES_ENDED = "SALES_ENDED"
+    Sold_Out = "Sold_Out",
+    Status_Closed = "Status_Closed",
+    Sales_Not_Started = "Sales_Not_Started",
+    Sales_Ended = "Sales_Ended"
 }
 
-export interface AddEventArgs {
+export interface AddEventInput {
     eventName: string;
     attendeeType: AttendeeType;
     eventType: EventType;
@@ -95,7 +95,7 @@ export interface AddEventArgs {
     isDeleted: boolean;
 }
 
-export interface UpdateEventArgs {
+export interface UpdateEventInput {
     eventName: string;
     attendeeType: AttendeeType;
     eventType: EventType;
@@ -119,7 +119,8 @@ export interface UpdateEventArgs {
     isDeleted: boolean;
 }
 
-export interface AddTicketArgs {
+export interface AddTicketInput {
+    eventId: string;
     ticketName: string;
     ticketColor: string;
     ticketStatus: TicketStatus;
@@ -136,22 +137,42 @@ export interface AddTicketArgs {
     salesEndDate: string;
     salesEndTime: string;
     ticketSlotType: TicketSlots;
-    ticketSlotValue: string;
+    ticketSlotValue: number;
     ticketSampleProduct: string;
     ticketDescription: string;
     ticketVisibilityInApp: TicketVisibilityInApp;
-    hiddenWhenConditions: HiddenWhen;
+    ticketHiddenWhen: HiddenWhen;
+    isDeleted: boolean;
+}
+
+export interface Ticket {
+    eventId?: Nullable<Event>;
+    id: string;
+    ticketName: string;
+    ticketColor: string;
+    ticketQuantity: number;
+    ticketValue: number;
+    ticketDiscountValue: number;
+    minimumBuyingLimit: number;
+    maximumBuyingLimit: number;
+    saleStartDate: string;
+    saleStartTime: string;
+    saleEndDate: string;
+    saleEndTime: string;
+    ticketSlotValue: number;
+    ticketSampleProduct: string;
+    ticketDescription: string;
     isDeleted: boolean;
 }
 
 export interface Event {
     id: string;
     eventName: string;
-    attendeeType: AttendeeType;
-    eventType: EventType;
+    attendeeType: string;
+    eventType: string;
     storeName: string;
     eventLocation: string;
-    sponsorshipTier: SponsorshipTier;
+    sponsorshipTier: string;
     eventDescription: string;
     eventStartDate: string;
     eventStartTime: string;
@@ -165,51 +186,25 @@ export interface Event {
     eventTnC: string;
     publishToBrands: boolean;
     publishToCustomers: boolean;
-    status: Status;
+    status: string;
     isDeleted: boolean;
-    createdAt?: Nullable<DateTime>;
-    updatedAt?: Nullable<DateTime>;
-}
-
-export interface Ticket {
-    id: string;
-    ticketName: string;
-    ticketColor: string;
-    ticketStatus: TicketStatus;
-    ticketQuantity: number;
-    ticketType: TicketType;
-    ticketValue: number;
-    ticketConsumptionType: TicketConsumptionType;
-    ticketDiscountType: TicketDiscountType;
-    ticketDiscountValue: number;
-    minimumBuyingLimit: number;
-    maximumBuyingLimit: number;
-    salesStartDate: string;
-    salesStartTime: string;
-    salesEndDate: string;
-    salesEndTime: string;
-    ticketSlotType: TicketSlots;
-    ticketSlotValue: string;
-    ticketSampleProduct: string;
-    ticketDescription: string;
-    ticketVisibilityInApp: TicketVisibilityInApp;
-    hiddenWhenConditions: HiddenWhen;
-    isDeleted: boolean;
-    createdAt?: Nullable<DateTime>;
-    updatedAt?: Nullable<DateTime>;
+    createdAt: DateTime;
+    updatedAt: DateTime;
+    tickets?: Nullable<Ticket[]>;
 }
 
 export interface IQuery {
     getAllEvents(): Event[] | Promise<Event[]>;
     getEventById(eventId: string): Nullable<Event> | Promise<Nullable<Event>>;
     getAllTickets(): Ticket[] | Promise<Ticket[]>;
+    getTicketByEventId(eventId: string): Nullable<Ticket[]> | Promise<Nullable<Ticket[]>>;
 }
 
 export interface IMutation {
-    createEvent(addEventArgs: AddEventArgs): Event | Promise<Event>;
+    createEvent(addEventInput: AddEventInput): Event | Promise<Event>;
     deleteEventById(eventId: string): string | Promise<string>;
-    updateEventById(id: string, updateEventArgs: UpdateEventArgs): Event | Promise<Event>;
-    createTicket(addTicketArgs: AddTicketArgs): Ticket | Promise<Ticket>;
+    updateEventById(id: string, updateEventInput: UpdateEventInput): Event | Promise<Event>;
+    createTicket(addTicketInput: AddTicketInput): Ticket | Promise<Ticket>;
 }
 
 export type DateTime = any;

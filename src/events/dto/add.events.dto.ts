@@ -1,16 +1,21 @@
 import { Field, InputType } from '@nestjs/graphql';
-// import { Ticket } from 'src/tickets/tickets.graphql';
+import {
+  AttendeeType,
+  EventType,
+  SponsorshipTier,
+  Status,
+} from '../events.enum';
 
 @InputType()
-export class UpdateEventArgs {
+export class AddEventInput {
   @Field()
   eventName: string;
 
-  @Field()
-  attendeeType: string;
+  @Field(() => AttendeeType)
+  attendeeType: AttendeeType;
 
-  @Field()
-  eventType: string;
+  @Field(() => EventType)
+  eventType: EventType;
 
   @Field()
   storeName: string;
@@ -18,8 +23,8 @@ export class UpdateEventArgs {
   @Field()
   eventLocation: string;
 
-  @Field()
-  sponsorshipTier: string;
+  @Field(() => SponsorshipTier)
+  sponsorshipTier: SponsorshipTier;
 
   @Field()
   eventDescription: string;
@@ -60,12 +65,9 @@ export class UpdateEventArgs {
   @Field()
   publishToCustomers: boolean;
 
-  @Field()
-  status: string;
+  @Field(() => Status)
+  status: Status;
 
   @Field()
   isDeleted: boolean;
-
-  // @Field(() => [Ticket])
-  // tickets: Ticket[];
 }
