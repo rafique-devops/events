@@ -8,6 +8,7 @@ import { join } from 'path';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver } from '@nestjs/apollo';
 // import { Ticket } from 'src/tickets/entities/ticket.entity';
+import { BrandInterestModule } from './brand_interest/brand_interest.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { ApolloDriver } from '@nestjs/apollo';
     // }),
     EventsModule,
     TicketsModule,
+    BrandInterestModule,
   ],
   controllers: [],
   providers: [AppService],

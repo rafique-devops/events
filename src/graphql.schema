@@ -8,6 +8,13 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export enum SponsorshipTier {
+    BRONZE = "BRONZE",
+    SILVER = "SILVER",
+    GOLD = "GOLD",
+    PLATINUM = "PLATINUM"
+}
+
 export enum AttendeeType {
     MEMBER = "MEMBER",
     NON_MEMBER = "NON_MEMBER"
@@ -16,13 +23,6 @@ export enum AttendeeType {
 export enum EventType {
     ONE_TO_ONE = "ONE_TO_ONE",
     ONE_TO_MANY = "ONE_TO_MANY"
-}
-
-export enum SponsorshipTier {
-    BRONZE = "BRONZE",
-    SILVER = "SILVER",
-    GOLD = "GOLD",
-    PLATINUM = "PLATINUM"
 }
 
 export enum Status {
@@ -77,7 +77,7 @@ export interface AddEventInput {
     eventType: EventType;
     storeName: string;
     eventLocation: string;
-    sponsorshipTier: SponsorshipTier;
+    sponsorshipTier: SponsorshipTier[];
     eventDescription: string;
     eventStartDate: string;
     eventStartTime: string;
@@ -101,7 +101,7 @@ export interface UpdateEventInput {
     eventType: EventType;
     storeName: string;
     eventLocation: string;
-    sponsorshipTier: SponsorshipTier;
+    sponsorshipTier: SponsorshipTier[];
     eventDescription: string;
     eventStartDate: string;
     eventStartTime: string;
@@ -145,6 +145,12 @@ export interface AddTicketInput {
     isDeleted: boolean;
 }
 
+export interface BrandInterestInput {
+    eventId: string;
+    sponsorshipTier: SponsorshipTier;
+    isInterested: boolean;
+}
+
 export interface Ticket {
     eventId?: Nullable<Event>;
     id: string;
@@ -172,7 +178,7 @@ export interface Event {
     eventType: string;
     storeName: string;
     eventLocation: string;
-    sponsorshipTier: string;
+    sponsorshipTier: SponsorshipTier[];
     eventDescription: string;
     eventStartDate: string;
     eventStartTime: string;
@@ -193,6 +199,15 @@ export interface Event {
     tickets?: Nullable<Ticket[]>;
 }
 
+export interface BrandInterest {
+    id: string;
+    sponsorshipTier: SponsorshipTier;
+    isInterested: boolean;
+    createdAt: DateTime;
+    updatedAt: DateTime;
+    eventId: Event;
+}
+
 export interface IQuery {
     getAllEvents(): Event[] | Promise<Event[]>;
     getEventById(eventId: string): Nullable<Event> | Promise<Nullable<Event>>;
@@ -205,6 +220,7 @@ export interface IMutation {
     deleteEventById(eventId: string): string | Promise<string>;
     updateEventById(id: string, updateEventInput: UpdateEventInput): Event | Promise<Event>;
     createTicket(addTicketInput: AddTicketInput): Ticket | Promise<Ticket>;
+    submitInterest(showInterest: BrandInterestInput): BrandInterest | Promise<BrandInterest>;
 }
 
 export type DateTime = any;

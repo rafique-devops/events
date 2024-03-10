@@ -9,7 +9,6 @@ import { ApolloError } from 'apollo-server-express';
 
 @Injectable()
 export class TicketsService {
-  [x: string]: any;
   constructor(
     @InjectRepository(Ticket)
     private ticketRepository: Repository<Ticket>,
@@ -20,7 +19,7 @@ export class TicketsService {
     try {
       const create = await this.ticketRepository.save(ticket);
       if (!create) {
-        throw new Error('Failed to Creayed Ticket');
+        throw new Error('Failed to Create Ticket');
       }
       return create;
     } catch (error) {

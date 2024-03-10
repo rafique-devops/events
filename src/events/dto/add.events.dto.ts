@@ -23,8 +23,8 @@ export class AddEventInput {
   @Field()
   eventLocation: string;
 
-  @Field(() => SponsorshipTier)
-  sponsorshipTier: SponsorshipTier;
+  @Field(() => [SponsorshipTier])
+  sponsorshipTier: SponsorshipTier[];
 
   @Field()
   eventDescription: string;

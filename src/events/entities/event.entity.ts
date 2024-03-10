@@ -50,13 +50,14 @@ export class Event {
   @Column()
   eventLocation: string;
 
-  @Field()
+  @Field(() => [SponsorshipTier])
   @Column({
     type: 'enum',
     enum: SponsorshipTier,
+    array: true,
     nullable: false,
   })
-  sponsorshipTier: string;
+  sponsorshipTier: SponsorshipTier[];
 
   @Field()
   @Column()
